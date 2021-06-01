@@ -1,0 +1,154 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: sandbox-manager
+
+package:
+    individually: true
+
+plugins: # - serverless-dotenv-plugin # Load .env as environment variables
+    - serverless-dynamodb-local
+    - serverless-offline
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+provider:
+    name: aws
+    runtime: nodejs12.x
+    stage: dev
+    region: us-east-1
+    environment:
+        REQ_TABLE: ${self:custom.reqTableName}
+        REG_TABLE: ${self:custom.regTableName}
+        AM_URL: ${self:custom.am_URL}
+    iamRoleStatements:
+        - Effect: 'Allow'
+          Action:
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+          Resource: 'arn:aws:dynamodb:us-east-1:*:*'
+
+custom:
+    reqTableName: sandbox-requests
+    regTableName: sandbox-registry
+    am_URL: 'https://account.demandware.com/dw'
+    stage: ${opt:stage, self.provider.stage}
+    dynamodb:
+        stages:
+            - dev
+        start:
+            port: 8000
+            inMemory: true
+            migrate: true
+
+functions:
+    # SANDBOX REQUEST FUNCTIONS
+    createSBRequest:
+        handler: src/requests-api/createSandboxRequest.handler
+        events:
+            - http:
+                  path: sandbox-request
+                  method: post
+    getSBRequest:
+        handler: src/requests-api/getSandboxRequest.handler
+        events:
+            - http:
+                  path: sandbox-request/{id}
+                  method: get
+    getAllRequests:
+        handler: src/requests-api/getAllRequests.handler
+        events:
+            - http:
+                  path: sandbox-request/all
+                  method: get
+    getPendingRequests:
+        handler: src/requests-api/getPendingRequests.handler
+        events:
+            - http:
+                  path: sandbox-request/pending
+                  method: get
+    approveSBRequest:
+        handler: src/requests-api/approveSandboxRequest.handler
+        events:
+            - http:
+                  path: sandbox-request/approve/{id}
+                  method: post
+    declineSBRequest:
+        handler: src/requests-api/declineSandboxRequest.handler
+        events:
+            - http:
+                  path: sandbox-request/decline/{id}
+                  method: post
+
+    # SANDBOX REGISTRY FUNCTIONS
+    createSandbox:
+        handler: src/registry-api/createSandbox.handler
+        events:
+            - http:
+                  path: sandbox-registry
+                  method: post
+    getSandbox:
+        handler: src/registry-api/getSandbox.handler
+        events:
+            - http:
+                  path: sandbox-registry
+                  method: get
+    getAllSandboxes:
+        handler: src/registry-api/getAllSandboxes.handler
+        events:
+            - http:
+                  path: sandbox-registry/all
+                  method: get
+    getUnallocatedSandboxes:
+        handler: src/registry-api/getUnallocatedSandboxes.handler
+        events:
+            - http:
+                  path: sandbox-registry/unallocated
+                  method: get
+
+# you can add CloudFormation resource templates here
+resources: # CloudFormation template syntax
+    Resources:
+        # SANDBOX REQUESTS TABLE
+        sandboxRequestsTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:custom.reqTableName}
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+        # SANDBOX REGISTRY TABLE
+        sandboxRegistryTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ${self:custom.regTableName}
+                AttributeDefinitions:
+                    - AttributeName: realm
+                      AttributeType: S
+                    - AttributeName: num
+                      AttributeType: N
+                KeySchema:
+                    - AttributeName: realm
+                      KeyType: HASH
+                    - AttributeName: num
+                      KeyType: RANGE
+                BillingMode: PAY_PER_REQUEST
