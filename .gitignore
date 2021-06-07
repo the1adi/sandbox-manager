@@ -1,2 +1,5 @@
 .dynamodb
 node_modules
+
+# Account Manager
+am_config.js
