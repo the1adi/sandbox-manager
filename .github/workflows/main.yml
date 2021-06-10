@@ -25,9 +25,10 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
             - name: serverless deploy
-              run: npm install -g serverless
-              run: npm ci
-              run: sls deploy
+              run: |
+                  npm install -g serverless
+                  npm ci
+                  sls deploy
               env:
                   # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
                   # or if using AWS credentials directly
