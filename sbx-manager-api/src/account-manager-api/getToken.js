@@ -4,7 +4,7 @@ const am_config = require('./am_config')
 
 // Gets Token from Account Manager
 module.exports.handler = async () => {
-    var token = am_config.b64_AM
+    var token = process.env.b64_AM
     var config = {
         method: 'post',
         url: process.env.AM_URL + '/oauth2/access_token',
