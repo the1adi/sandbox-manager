@@ -23,7 +23,7 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - run: npm ci
             - name: serverless deploy
-              run: cd sbx-manager-api
+              working-directory: ./sbx-manager-api
               uses: serverless/github-action@master
               with:
                   args: deploy
