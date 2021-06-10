@@ -4,6 +4,9 @@ on:
     push:
         branches:
             - master
+    pull_request:
+        branches:
+            - master
 
 jobs:
     deploy:
@@ -14,19 +17,17 @@ jobs:
                 working-directory: ./sbx-manager-api
         strategy:
             matrix:
-                node-version: [12.x]
+                node-version: [14.15.4]
         steps:
             - uses: actions/checkout@v2
             - name: Use Node.js ${{ matrix.node-version }}
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
-            - run: npm ci
             - name: serverless deploy
-              working-directory: ./sbx-manager-api
-              uses: serverless/github-action@master
-              with:
-                  args: deploy
+              run: npm install -g serverless
+              run: npm ci
+              run: sls deploy
               env:
                   # SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
                   # or if using AWS credentials directly
