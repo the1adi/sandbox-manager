@@ -7,7 +7,7 @@
         "test": "serverless-bundle test"
     },
     "keywords": [],
-    "author": "",
+    "author": "Aditya Shahani",
     "license": "ISC",
     "devDependencies": {
         "serverless-dynamodb-local": "^0.2.39",
