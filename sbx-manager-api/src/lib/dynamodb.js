@@ -7,6 +7,6 @@ let options = { region: 'localhost', endpoint: 'http://localhost:8000' }
 
 const client = process.env.IS_OFFLINE
     ? new AWS.DynamoDB.DocumentClient(options)
-    : AWS.DynamoDB.DocumentClient()
+    : new AWS.DynamoDB.DocumentClient()
 
 module.exports = client
