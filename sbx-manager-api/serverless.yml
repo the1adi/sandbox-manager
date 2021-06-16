@@ -65,36 +65,46 @@ functions:
             - http:
                   path: sandbox-request
                   method: post
+                  cors: true
     getSBRequest:
         handler: src/requests-api/getSandboxRequest.handler
         events:
             - http:
                   path: sandbox-request/{id}
                   method: get
+                  cors: true
     getAllRequests:
         handler: src/requests-api/getAllRequests.handler
         events:
             - http:
                   path: sandbox-request/all
                   method: get
+                  cors: true
+                  authorizer: aws_iam
     getPendingRequests:
         handler: src/requests-api/getPendingRequests.handler
         events:
             - http:
                   path: sandbox-request/pending
                   method: get
+                  cors: true
+                  authorizer: aws_iam
     approveSBRequest:
         handler: src/requests-api/approveSandboxRequest.handler
         events:
             - http:
                   path: sandbox-request/approve/{id}
                   method: post
+                  cors: true
+                  authorizer: aws_iam
     declineSBRequest:
         handler: src/requests-api/declineSandboxRequest.handler
         events:
             - http:
                   path: sandbox-request/decline/{id}
                   method: post
+                  cors: true
+                  authorizer: aws_iam
 
     # SANDBOX REGISTRY FUNCTIONS
     createSandbox:
@@ -103,24 +113,29 @@ functions:
             - http:
                   path: sandbox-registry
                   method: post
+                  cors: true
+                  authorizer: aws_iam
     getSandbox:
         handler: src/registry-api/getSandbox.handler
         events:
             - http:
                   path: sandbox-registry
                   method: get
+                  cors: true
     getAllSandboxes:
         handler: src/registry-api/getAllSandboxes.handler
         events:
             - http:
                   path: sandbox-registry/all
                   method: get
+                  cors: true
     getUnallocatedSandboxes:
         handler: src/registry-api/getUnallocatedSandboxes.handler
         events:
             - http:
                   path: sandbox-registry/unallocated
                   method: get
+                  cors: true
 
 # you can add CloudFormation resource templates here
 resources: # CloudFormation template syntax
