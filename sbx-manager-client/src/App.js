@@ -12,7 +12,6 @@ import { useHistory } from 'react-router-dom'
 function App() {
     const history = useHistory()
     const [isAuthenticating, setIsAuthenticating] = useState(true)
-
     const [isAuthenticated, userHasAuthenticated] = useState(false)
 
     useEffect(() => {
@@ -58,9 +57,14 @@ function App() {
                     <Navbar.Collapse className="justify-content-end">
                         <Nav activeKey={window.location.pathname}>
                             {isAuthenticated ? (
-                                <Nav.Link onClick={handleLogout}>
-                                    Logout
-                                </Nav.Link>
+                                <>
+                                    <LinkContainer to="/settings">
+                                        <Nav.Link>Settings</Nav.Link>
+                                    </LinkContainer>
+                                    <Nav.Link onClick={handleLogout}>
+                                        Logout
+                                    </Nav.Link>
+                                </>
                             ) : (
                                 <>
                                     <LinkContainer to="/signup">

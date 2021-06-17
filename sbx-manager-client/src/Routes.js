@@ -3,6 +3,8 @@ import { Route, Switch } from 'react-router-dom'
 import Home from './containers/Home'
 import NotFound from './containers/NotFound'
 import Login from './containers/Login'
+import ChangePassword from './containers/ChangePassword'
+import Settings from './containers/Settings'
 
 export default function Routes() {
     return (
@@ -10,8 +12,17 @@ export default function Routes() {
             <Route exact path="/">
                 <Home />
             </Route>
+            <Route exact path="/settings">
+                <Settings />
+            </Route>
+            <Route exact path="/settings/password">
+                <ChangePassword />
+            </Route>
             <Route exact path="/login">
                 <Login />
+            </Route>
+            <Route exact path="/resetpassword">
+                <ChangePassword />
             </Route>
             {/* Finally, catch all unmatched routes */}
             <Route>
