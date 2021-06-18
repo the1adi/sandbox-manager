@@ -50,7 +50,7 @@ function App() {
                 >
                     <LinkContainer to="/">
                         <Navbar.Brand className="font-weight-bold text-muted">
-                            Sandbox Manager
+                            SFCC Sandbox Manager
                         </Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle />

@@ -1,30 +1,59 @@
 import React, { useState } from 'react'
-import { Auth } from 'aws-amplify'
+import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
 import { useHistory } from 'react-router-dom'
 import LoaderButton from '../components/LoaderButton'
-import { useAppContext } from '../libs/contextLib'
 import { useFormFields } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
 import DatePicker from 'react-datepicker'
 import './Home.css'
 import Col from 'react-bootstrap/esm/Col'
 import 'react-datepicker/dist/react-datepicker.css'
+import { zones, companies } from '../libs/mappingsLib'
 
 export default function Home() {
+    // Setting Defauls
     const history = useHistory()
-    const { userHasAuthenticated } = useAppContext()
     const [isChanging, setIsChanging] = useState(false)
+    var sandboxes = ['...']
     const [fields, handleFieldChange] = useFormFields({
         email: '',
         projectName: '',
+        companyName: companies[0],
+        sandbox: sandboxes[0],
     })
+
+    // Choosing a date
+    const today = new Date()
     const [endDate, setEndDate] = useState(new Date())
 
+    // Admin or not
+    const [isAdmin, setIsAdmin] = useState(false)
+
+    const onSwitchAction = () => {
+        setIsAdmin(!isAdmin)
+    }
+
+    // Form Validation
     function validateForm() {
         return fields.email.length > 0 && fields.projectName.length > 0
     }
 
+    // Zones and Sandboxes
+    const [zone, setZone] = useState(zones[0])
+    async function handleZoneChange(event) {
+        event.preventDefault()
+        
+        try {
+            sandboxes = await API.get('sandbox', '/sandbox-registry/all')
+            console.log(sandboxes)
+        } catch (error) {
+            console.log(error)
+        }
+        setZone(event.target.value)
+    }
+
+    // Handle Submit for form
     async function handleSubmit(event) {
         event.preventDefault()
 
@@ -60,13 +89,14 @@ export default function Home() {
                     </Form.Group>
                     <Form.Group as={Col} controlId="companyName">
                         <Form.Label>Company Name</Form.Label>
-                        <Form.Control as="select">
-                            <option>L'Oreal</option>
-                            <option>Sapient</option>
-                            <option>Astound</option>
-                            <option>OSF</option>
-                            <option>Salesforce</option>
-                            <option>Other</option>
+                        <Form.Control
+                            as="select"
+                            value={fields.companyName}
+                            onChange={handleFieldChange}
+                        >
+                            {companies.map((company) => (
+                                <option key={company}>{company}</option>
+                            ))}
                         </Form.Control>
                     </Form.Group>
                 </Form.Row>
@@ -85,21 +115,49 @@ export default function Home() {
                         <DatePicker
                             selected={endDate}
                             onChange={(date) => setEndDate(date)}
+                            minDate={today}
                         />
                     </Form.Group>
                 </Form.Row>
-                <Form.Check
-                    inline
-                    label="Assign as Admin"
-                    name="admin"
-                    type="radio"
-                />
-                <Form.Check
-                    inline
-                    label="Assign as User"
-                    name="admin"
-                    type="radio"
-                />
+                <Form.Row>
+                    <Form.Group as={Col} controlId="zone">
+                        <Form.Label>Zone</Form.Label>
+                        <Form.Control
+                            as="select"
+                            value={zone}
+                            onChange={(e) => {
+                                handleZoneChange(e)
+                            }}
+                        >
+                            {zones.map((zone) => (
+                                <option key={zone}>{zone}</option>
+                            ))}
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group as={Col} controlId="sandbox">
+                        <Form.Label>Sandbox</Form.Label>
+                        <Form.Control
+                            as="select"
+                            value={fields.sandbox}
+                            onChange={handleFieldChange}
+                        >
+                            {/* To change */}
+                            {sandboxes.map((sandbox) => (
+                                <option key={sandbox}>{sandbox}</option>
+                            ))}
+                        </Form.Control>
+                    </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                    <Form.Check
+                        inline
+                        id="isAdmin"
+                        label="Assign as Admin"
+                        type="switch"
+                        checked={isAdmin}
+                        onChange={onSwitchAction}
+                    />
+                </Form.Row>
                 <LoaderButton
                     block
                     size="lg"

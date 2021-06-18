@@ -17,5 +17,7 @@
 }
 
 .Home .react-datepicker-wrapper input {
-    padding: 4px 12px;
+    display: block;
+    width: 100%;
+    padding: 4px 18px;
 }
