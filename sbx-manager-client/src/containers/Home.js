@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
 import { useHistory } from 'react-router-dom'
@@ -15,7 +15,7 @@ export default function Home() {
     // Setting Defauls
     const history = useHistory()
     const [isChanging, setIsChanging] = useState(false)
-    var sandboxes = ['...']
+    const [sandboxes, setSandboxes] = useState([''])
     const [fields, handleFieldChange] = useFormFields({
         email: '',
         projectName: '',
@@ -23,13 +23,26 @@ export default function Home() {
         sandbox: sandboxes[0],
     })
 
+    useEffect(() => {
+        onLoad()
+    }, [])
+
+    async function onLoad() {
+        try {
+            const sbxRes = await API.get('sandbox', '/sandbox-registry/all')
+            setSandboxes(sbxRes.Items)
+            console.log(sandboxes)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     // Choosing a date
     const today = new Date()
     const [endDate, setEndDate] = useState(new Date())
 
     // Admin or not
     const [isAdmin, setIsAdmin] = useState(false)
-
     const onSwitchAction = () => {
         setIsAdmin(!isAdmin)
     }
@@ -43,14 +56,14 @@ export default function Home() {
     const [zone, setZone] = useState(zones[0])
     async function handleZoneChange(event) {
         event.preventDefault()
-        
+        setZone(event.target.value)
         try {
-            sandboxes = await API.get('sandbox', '/sandbox-registry/all')
+            const sbxRes = await API.get('sandbox', '/sandbox-registry/all')
+            setSandboxes(sbxRes.Items)
             console.log(sandboxes)
         } catch (error) {
             console.log(error)
         }
-        setZone(event.target.value)
     }
 
     // Handle Submit for form
@@ -141,7 +154,6 @@ export default function Home() {
                             value={fields.sandbox}
                             onChange={handleFieldChange}
                         >
-                            {/* To change */}
                             {sandboxes.map((sandbox) => (
                                 <option key={sandbox}>{sandbox}</option>
                             ))}
