@@ -12,7 +12,6 @@ import { useHistory } from 'react-router-dom'
 function App() {
     const history = useHistory()
     const [isAuthenticating, setIsAuthenticating] = useState(true)
-
     const [isAuthenticated, userHasAuthenticated] = useState(false)
 
     useEffect(() => {
@@ -51,16 +50,21 @@ function App() {
                 >
                     <LinkContainer to="/">
                         <Navbar.Brand className="font-weight-bold text-muted">
-                            Sandbox Manager
+                            SFCC Sandbox Manager
                         </Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle />
                     <Navbar.Collapse className="justify-content-end">
                         <Nav activeKey={window.location.pathname}>
                             {isAuthenticated ? (
-                                <Nav.Link onClick={handleLogout}>
-                                    Logout
-                                </Nav.Link>
+                                <>
+                                    <LinkContainer to="/settings">
+                                        <Nav.Link>Settings</Nav.Link>
+                                    </LinkContainer>
+                                    <Nav.Link onClick={handleLogout}>
+                                        Logout
+                                    </Nav.Link>
+                                </>
                             ) : (
                                 <>
                                     <LinkContainer to="/signup">

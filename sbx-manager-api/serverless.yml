@@ -136,6 +136,13 @@ functions:
                   path: sandbox-registry/unallocated
                   method: get
                   cors: true
+    getZoneSandboxes:
+        handler: src/registry-api/getZoneSandboxes.handler
+        events:
+            - http:
+                  path: sandbox-registry/zone/{zone}
+                  method: get
+                  cors: true
 
 # you can add CloudFormation resource templates here
 resources: # CloudFormation template syntax

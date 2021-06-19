@@ -4,10 +4,10 @@ const getToken = require('../account-manager-api/getToken')
 const getUser = require('../account-manager-api/getUser')
 const updateUser = require('../account-manager-api/updateUser')
 
-module.exports.handler = async (params) => {
+module.exports.handler = async (event) => {
     console.log('ALLOCATING SANDBOX NOW')
-    console.log('params:', params)
-    if (!params.details || !params.key || !params.email) {
+    console.log('event:', event)
+    if (!event.details || !event.key || !event.email) {
         return {
             error: 'missing params in function call',
         }
@@ -24,7 +24,7 @@ module.exports.handler = async (params) => {
 
         // Get User's details
         const user = await getUser.handler({
-            email: params.email,
+            email: event.email,
             token: token.access_token,
         })
         console.log('USER: ', user)
@@ -35,10 +35,10 @@ module.exports.handler = async (params) => {
         // Update User's RoleTenantFilter
         const roleTenantFilter = await helpers.getNewRoleTenantFilter({
             action: "allocate",
-            isAdmin: params.isAdmin,
+            isAdmin: event.isAdmin,
             roleTenantFilter: user.roleTenantFilter,
-            realm: params.key.realm,
-            num: params.key.num,
+            realm: event.key.realm,
+            num: event.key.num,
         })
 
         // Update Call to Account Manager
@@ -60,13 +60,13 @@ module.exports.handler = async (params) => {
     }
 
     // Update Sandbox Details in SB Registry DB
-    var parameters
-    if (params.isAdmin) {
-        parameters = {
+    var params
+    if (event.isAdmin) {
+        params = {
             TableName: process.env.REG_TABLE,
             Key: {
-                realm: params.key.realm,
-                num: params.key.num,
+                realm: event.key.realm,
+                num: event.key.num,
             },
             // 'UpdateExpression' defines the attributes to be updated
             // 'ExpressionAttributeValues' defines the value in the update expression
@@ -79,9 +79,9 @@ module.exports.handler = async (params) => {
             ConditionExpression: 'not contains (#U, :adminEmail)',
             ExpressionAttributeValues: {
                 ':isAllocated': true,
-                ':allocationDetails': params.details,
-                ':adminEmailArr': [params.email],
-                ':adminEmail': params.email,
+                ':allocationDetails': event.details,
+                ':adminEmailArr': [event.email],
+                ':adminEmail': event.email,
             },
             // 'ReturnValues' specifies if and how to return the item's attributes,
             // where ALL_NEW returns all attributes of the item after the update; you
@@ -90,11 +90,11 @@ module.exports.handler = async (params) => {
         }
     }
     else {
-        parameters = {
+        params = {
             TableName: process.env.REG_TABLE,
             Key: {
-                realm: params.key.realm,
-                num: params.key.num,
+                realm: event.key.realm,
+                num: event.key.num,
             },
             // 'UpdateExpression' defines the attributes to be updated
             // 'ExpressionAttributeValues' defines the value in the update expression
@@ -107,9 +107,9 @@ module.exports.handler = async (params) => {
             ConditionExpression: 'not contains (#U, :userEmail)',
             ExpressionAttributeValues: {
                 ':isAllocated': true,
-                ':allocationDetails': params.details,
-                ':userEmailArr': [params.email],
-                ':userEmail': params.email,
+                ':allocationDetails': event.details,
+                ':userEmailArr': [event.email],
+                ':userEmail': event.email,
             },
             // 'ReturnValues' specifies if and how to return the item's attributes,
             // where ALL_NEW returns all attributes of the item after the update; you
@@ -119,7 +119,7 @@ module.exports.handler = async (params) => {
     }
 
     try {
-        const res = await dynamodb.update(parameters).promise()
+        const res = await dynamodb.update(params).promise()
         console.log('response: ', res)
         return { message: 'Success' }
     } catch (error) {

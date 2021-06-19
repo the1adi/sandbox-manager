@@ -6,60 +6,73 @@ import LoaderButton from '../components/LoaderButton'
 import { useAppContext } from '../libs/contextLib'
 import { useFormFields } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
-import './Login.css'
+import './ChangePassword.css'
 
-export default function Login() {
+export default function ResetPassword() {
     const history = useHistory()
     const { userHasAuthenticated } = useAppContext()
-    const [isLoading, setIsLoading] = useState(false)
+    const [isChanging, setIsChanging] = useState(false)
     const [fields, handleFieldChange] = useFormFields({
-        email: '',
+        oldPassword: '',
         password: '',
+        confirmPassword: '',
     })
 
     function validateForm() {
-        return fields.email.length > 0 && fields.password.length > 0
+        return (
+            fields.oldPassword.length > 0 &&
+            fields.password.length > 0 &&
+            fields.password === fields.confirmPassword
+        )
     }
 
     async function handleSubmit(event) {
         event.preventDefault()
 
-        setIsLoading(true)
+        setIsChanging(true)
 
         try {
-            const user = await Auth.signIn(fields.email, fields.password)
-            console.log(user)
-            if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-                await Auth.completeNewPassword(
-                    user, // the Cognito User Object
-                    fields.password // the new password
-                )
-            }
+            const currentUser = await Auth.currentAuthenticatedUser()
+            console.log(currentUser)
+            await Auth.changePassword(
+                currentUser,
+                fields.oldPassword,
+                fields.password
+            )
             userHasAuthenticated(true)
-            history.push('/')
+            history.push('/settings')
         } catch (e) {
             onError(e)
-            setIsLoading(false)
+            setIsChanging(false)
         }
     }
 
     return (
-        <div className="Login">
+        <div className="ChangePassword">
             <Form onSubmit={handleSubmit}>
-                <Form.Group size="lg" controlId="email">
-                    <Form.Label>Email</Form.Label>
+                <Form.Group size="lg" controlId="oldPassword">
+                    <Form.Label>Old Password</Form.Label>
                     <Form.Control
                         autoFocus
-                        type="email"
-                        value={fields.email}
+                        type="password"
+                        value={fields.oldPassword}
                         onChange={handleFieldChange}
                     />
                 </Form.Group>
                 <Form.Group size="lg" controlId="password">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>New Password</Form.Label>
                     <Form.Control
+                        autoFocus
                         type="password"
                         value={fields.password}
+                        onChange={handleFieldChange}
+                    />
+                </Form.Group>
+                <Form.Group size="lg" controlId="confirmPassword">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        value={fields.confirmPassword}
                         onChange={handleFieldChange}
                     />
                 </Form.Group>
@@ -67,10 +80,10 @@ export default function Login() {
                     block
                     size="lg"
                     type="submit"
-                    isLoading={isLoading}
+                    isChanging={isChanging}
                     disabled={!validateForm()}
                 >
-                    Login
+                    Change Password
                 </LoaderButton>
             </Form>
         </div>
