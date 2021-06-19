@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
 import { useHistory } from 'react-router-dom'
@@ -15,6 +15,7 @@ export default function Home() {
     // Setting Defauls
     const history = useHistory()
     const [isChanging, setIsChanging] = useState(false)
+    const [zone, setZone] = useState(zones[0])
     const [sandboxes, setSandboxes] = useState([''])
     const [fields, handleFieldChange] = useFormFields({
         email: '',
@@ -24,18 +25,20 @@ export default function Home() {
     })
 
     useEffect(() => {
-        onLoad()
-    }, [])
-
-    async function onLoad() {
-        try {
-            const sbxRes = await API.get('sandbox', '/sandbox-registry/all')
-            setSandboxes(sbxRes.Items)
-            console.log(sandboxes)
-        } catch (error) {
-            console.log(error)
+        async function onLoad() {
+            try {
+                const sbxRes = await API.get(
+                    'sandbox',
+                    '/sandbox-registry/zone/' + zone
+                )
+                setSandboxes(sbxRes.Items)
+                console.log(sandboxes)
+            } catch (error) {
+                console.log(error)
+            }
         }
-    }
+        onLoad()
+    }, [sandboxes, zone])
 
     // Choosing a date
     const today = new Date()
@@ -53,7 +56,7 @@ export default function Home() {
     }
 
     // Zones and Sandboxes
-    const [zone, setZone] = useState(zones[0])
+
     async function handleZoneChange(event) {
         event.preventDefault()
         setZone(event.target.value)

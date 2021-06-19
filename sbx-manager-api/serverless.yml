@@ -140,7 +140,7 @@ functions:
         handler: src/registry-api/getZoneSandboxes.handler
         events:
             - http:
-                  path: sandbox-registry/{zone}
+                  path: sandbox-registry/zone/{zone}
                   method: get
                   cors: true
 
