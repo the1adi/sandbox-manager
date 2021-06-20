@@ -25,20 +25,11 @@ export default function Home() {
     })
 
     useEffect(() => {
-        async function onLoad() {
-            try {
-                const sbxRes = await API.get(
-                    'sandbox',
-                    '/sandbox-registry/zone/' + zone
-                )
-                setSandboxes(sbxRes.Items)
-                console.log(sandboxes)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        onLoad()
-    }, [sandboxes, zone])
+        API.get('sandbox', '/sandbox-registry/zone/' + zone).then((sbxRes) => {
+            // console.log(sbxRes)
+            setSandboxes(sbxRes.Items)
+        })
+    }, [zone])
 
     // Choosing a date
     const today = new Date()
@@ -58,10 +49,11 @@ export default function Home() {
     // Zones and Sandboxes
 
     async function handleZoneChange(event) {
+        console.log('zone:', zone)
         event.preventDefault()
         setZone(event.target.value)
         try {
-            const sbxRes = await API.get('sandbox', '/sandbox-registry/all')
+            const sbxRes = await API.get('sandbox', '/sandbox-registry/zone/' + zone)
             setSandboxes(sbxRes.Items)
             console.log(sandboxes)
         } catch (error) {

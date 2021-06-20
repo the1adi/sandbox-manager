@@ -8,7 +8,7 @@ import { useFormFields } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
 import './ChangePassword.css'
 
-export default function ResetPassword() {
+export default function ChangePassword() {
     const history = useHistory()
     const { userHasAuthenticated } = useAppContext()
     const [isChanging, setIsChanging] = useState(false)

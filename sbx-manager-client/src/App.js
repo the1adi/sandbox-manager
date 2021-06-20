@@ -50,6 +50,13 @@ function App() {
                 >
                     <LinkContainer to="/">
                         <Navbar.Brand className="font-weight-bold text-muted">
+                            <img
+                                alt=""
+                                src="/batman-logo.png"
+                                width="60"
+                                height="30"
+                                className="d-inline-block align-top"
+                            />{' '}
                             SFCC Sandbox Manager
                         </Navbar.Brand>
                     </LinkContainer>
@@ -58,6 +65,15 @@ function App() {
                         <Nav activeKey={window.location.pathname}>
                             {isAuthenticated ? (
                                 <>
+                                    <LinkContainer to="/pending-requests">
+                                        <Nav.Link>Pending Requests</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/registry">
+                                        <Nav.Link>Sandbox Registry</Nav.Link>
+                                    </LinkContainer>
+                                    <LinkContainer to="/addsandbox">
+                                        <Nav.Link>Add Sandbox</Nav.Link>
+                                    </LinkContainer>
                                     <LinkContainer to="/settings">
                                         <Nav.Link>Settings</Nav.Link>
                                     </LinkContainer>
@@ -68,7 +84,9 @@ function App() {
                             ) : (
                                 <>
                                     <LinkContainer to="/signup">
-                                        <Nav.Link>Signup</Nav.Link>
+                                        <Nav.Link disabled="true">
+                                            Signup
+                                        </Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to="/login">
                                         <Nav.Link>Login</Nav.Link>
