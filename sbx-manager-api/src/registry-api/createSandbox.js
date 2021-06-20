@@ -18,7 +18,7 @@ module.exports.handler = async (event) => {
         Item: {
             // The attributes of the item to be created
             realm: data.realm.trim().toLowerCase(), // Hash Key (Partition Key)
-            num: data.num, // Range Key (Sort Key)
+            num: parseInt(data.num), // Range Key (Sort Key)
             zone: data.zone,
             admins: [],
             users: [],

@@ -8,7 +8,6 @@ export const companies = [
     'Salesforce',
     'Other',
 ]
-
-
+export const realms = ['LORA', 'CANADA', 'LATAM']
 
 // -------- Test --------

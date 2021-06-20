@@ -53,7 +53,7 @@ export default function Home() {
         event.preventDefault()
         setZone(event.target.value)
         try {
-            const sbxRes = await API.get('sandbox', '/sandbox-registry/all')
+            const sbxRes = await API.get('sandbox', '/sandbox-registry/zone/' + zone)
             setSandboxes(sbxRes.Items)
             console.log(sandboxes)
         } catch (error) {

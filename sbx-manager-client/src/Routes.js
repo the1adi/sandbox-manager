@@ -5,12 +5,16 @@ import NotFound from './containers/NotFound'
 import Login from './containers/Login'
 import ChangePassword from './containers/ChangePassword'
 import Settings from './containers/Settings'
+import AddSandbox from './containers/AddSandbox'
 
 export default function Routes() {
     return (
         <Switch>
             <Route exact path="/">
                 <Home />
+            </Route>
+            <Route exact path="/addsandbox">
+                <AddSandbox />
             </Route>
             <Route exact path="/settings">
                 <Settings />
