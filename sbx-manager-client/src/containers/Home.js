@@ -15,24 +15,47 @@ export default function Home() {
     // Setting Defauls
     const history = useHistory()
     const [isChanging, setIsChanging] = useState(false)
-    const [zone, setZone] = useState(zones[0])
-    const [sandboxes, setSandboxes] = useState([''])
+    const [sandboxes, setSandboxes] = useState({
+        0: {
+            name: '',
+            num: '',
+            realm: '',
+        },
+    })
     const [fields, handleFieldChange] = useFormFields({
         email: '',
         projectName: '',
         companyName: companies[0],
-        sandbox: sandboxes[0],
+        zone: zones[0],
     })
     const [sandbox, setSandbox] = useState(sandboxes[0])
 
-    useEffect(() => {
-        API.get('sandbox', '/sandbox-registry/zone/' + zone).then((sbxRes) => {
-            console.log(sbxRes)
-            const list = parseSandboxesRes(sbxRes.Items)
-            setSandboxes(list)
-            console.log('Sandbox:', fields.sandbox) //Not Working
+    // Create the list of sandboxes to display
+    const parseSandboxesRes = (items) => {
+        var list = {}
+        items.forEach((element) => {
+            list['dev' + element.num + '-' + element.realm] = {
+                name: 'dev' + element.num + '-' + element.realm,
+                num: element.num,
+                realm: element.realm,
+            }
         })
-    }, [zone, fields.sandbox])
+        return list
+    }
+
+    useEffect(() => {
+        API.get('sandbox', '/sandbox-registry/zone/' + fields.zone)
+            .then((sbxRes) => {
+                console.log(sbxRes)
+                const list = parseSandboxesRes(sbxRes.Items)
+                console.log('Setting Sandboxes List to:', list)
+                setSandboxes(list)
+                setSandbox(list[Object.keys(list)[0]])
+            })
+            .catch((error) => {
+                console.log(error.response)
+            })
+    }, [fields.zone])
 
     // Choosing a date
     const today = new Date()
@@ -49,32 +72,6 @@ export default function Home() {
         return fields.email.length > 0 && fields.projectName.length > 0
     }
 
-    // Zones and Sandboxes
-
-    async function handleZoneChange(event) {
-        console.log('zone:', zone)
-        setZone(event.target.value)
-        try {
-            const sbxRes = await API.get(
-                'sandbox',
-                '/sandbox-registry/zone/' + zone
-            )
-            const list = parseSandboxesRes(sbxRes.Items)
-            setSandboxes(list)
-            console.log(sandboxes)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const parseSandboxesRes = (items) => {
-        var list = []
-        items.forEach((element) => {
-            list.push('dev' + element.num + '-' + element.realm)
-        })
-        return list
-    }
-
     // Handle Submit for form
     async function handleSubmit(event) {
         event.preventDefault()
@@ -87,8 +84,9 @@ export default function Home() {
                 expirationDate: endDate,
             },
             email: fields.email,
-            Zone: zone,
-            num: fields.sandbox,
+            Zone: fields.zone,
+            num: sandbox.num,
+            realm: sandbox.realm,
             isAdmin: isAdmin,
         })
 
@@ -157,10 +155,8 @@ export default function Home() {
                         <Form.Label>Zone</Form.Label>
                         <Form.Control
                             as="select"
-                            value={zone}
-                            onChange={(e) => {
-                                handleZoneChange(e)
-                            }}
+                            value={fields.zone}
+                            onChange={handleFieldChange}
                         >
                             {zones.map((zone) => (
                                 <option key={zone}>{zone}</option>
@@ -171,10 +167,19 @@ export default function Home() {
                         <Form.Label>Sandbox</Form.Label>
                         <Form.Control
                             as="select"
-                            value={fields.sandbox}
-                            onChange={handleFieldChange}
+                            value={sandbox.name}
+                            onChange={(e) => {
+                                // console.log(e)
+                                // console.log(
+                                //     'TO SET: ',
+                                //     sandboxes[e.target.value]
+                                // )
+                                setSandbox(sandboxes[e.target.value])
+                                // console.log('sandbox: ', sandbox)
+                            }}
                         >
-                            {sandboxes.map((sandbox) => (
+                            {/* <option></option> */}
+                            {Object.keys(sandboxes).map((sandbox) => (
                                 <option key={sandbox}>{sandbox}</option>
                             ))}
                         </Form.Control>
