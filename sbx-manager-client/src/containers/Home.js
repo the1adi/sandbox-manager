@@ -26,11 +26,12 @@ export default function Home() {
 
     useEffect(() => {
         API.get('sandbox', '/sandbox-registry/zone/' + zone).then((sbxRes) => {
-            // console.log(sbxRes)
+            console.log(sbxRes)
             const list = parseSandboxesRes(sbxRes.Items)
             setSandboxes(list)
+            console.log('Sandbox:', fields.sandbox) //Not Working
         })
-    }, [zone])
+    }, [zone, fields.sandbox])
 
     // Choosing a date
     const today = new Date()
@@ -51,10 +52,12 @@ export default function Home() {
 
     async function handleZoneChange(event) {
         console.log('zone:', zone)
-        event.preventDefault()
         setZone(event.target.value)
         try {
-            const sbxRes = await API.get('sandbox', '/sandbox-registry/zone/' + zone)
+            const sbxRes = await API.get(
+                'sandbox',
+                '/sandbox-registry/zone/' + zone
+            )
             const list = parseSandboxesRes(sbxRes.Items)
             setSandboxes(list)
             console.log(sandboxes)
@@ -65,9 +68,9 @@ export default function Home() {
 
     const parseSandboxesRes = (items) => {
         var list = []
-        items.forEach(element => {
+        items.forEach((element) => {
             list.push('dev' + element.num + '-' + element.realm)
-        });
+        })
         return list
     }
 
@@ -76,6 +79,17 @@ export default function Home() {
         event.preventDefault()
 
         setIsChanging(true)
+        console.log({
+            details: {
+                projectName: fields.projectName,
+                company: fields.companyName,
+                expirationDate: endDate,
+            },
+            email: fields.email,
+            Zone: zone,
+            num: fields.sandbox,
+            isAdmin: isAdmin,
+        })
 
         try {
             history.push('/')

@@ -14,7 +14,7 @@ module.exports.handler = async (event) => {
     let id = event.pathParameters.id
     // Validate if id passed is a valid UUID
     if (!uuidValidate(id)) {
-        return response.create(400, { message: 'Bad Request' })
+        return response.create(400, { message: 'Bad Request.. Not a Valid UUID' })
     }
 
     // Check to see if SB request ID exists
@@ -29,9 +29,12 @@ module.exports.handler = async (event) => {
             throw new Error('Item not found.')
         }
         SBRequest = JSON.parse(res.body)
+        if (SBRequest.Item.actioned) {
+            throw new Error('Request has been actioned.')
+        }
     } catch (error) {
         // console.log(error)
-        return response.create(500, { error: error.message })
+        return response.create(400, { error: error.message })
     }
 
     // Call allocateSandbox - accept fieldName to update as a param

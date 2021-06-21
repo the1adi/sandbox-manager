@@ -23,7 +23,7 @@ module.exports.handler = async (event) => {
 
     try {
         const res = await dynamodb.get(params).promise()
-        console.log('response: ', res)
+        console.log('DB response: ', res)
         if (!res.Item) {
             // console.log('NO ITEM FOUND.. THROW ERROR')
             return response.create(404, { error: 'SB request not found.' })
