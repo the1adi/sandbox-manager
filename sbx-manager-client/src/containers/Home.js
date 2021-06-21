@@ -23,6 +23,7 @@ export default function Home() {
         companyName: companies[0],
         sandbox: sandboxes[0],
     })
+    const [sandbox, setSandbox] = useState(sandboxes[0])
 
     useEffect(() => {
         API.get('sandbox', '/sandbox-registry/zone/' + zone).then((sbxRes) => {
