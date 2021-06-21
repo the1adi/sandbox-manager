@@ -1,0 +1,13 @@
+.AddSandbox .lander {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.AddSandbox .lander h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+}
+.AddSandbox form {
+    margin: 0 auto;
+    max-width: 70%;
+}
