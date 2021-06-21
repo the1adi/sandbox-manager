@@ -20,7 +20,7 @@ module.exports.handler = async (event) => {
     var params = {
         TableName: process.env.REG_TABLE,
         Key: {
-            realm: realm,
+            realm: realm.trim().toLowerCase(),
             num: num,
         },
     }

@@ -107,8 +107,8 @@ functions:
                   authorizer: aws_iam
 
     # SANDBOX REGISTRY FUNCTIONS
-    createSandbox:
-        handler: src/registry-api/createSandbox.handler
+    addSandbox:
+        handler: src/registry-api/addSandbox.handler
         events:
             - http:
                   path: sandbox-registry

@@ -1,6 +1,7 @@
 const response = require('../lib/response')
 const dynamodb = require('../lib/dynamodb')
 
+// TODO This will need to be lazy loaded somehow...
 module.exports.handler = async (event) => {
     console.log('event:', event)
 
