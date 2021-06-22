@@ -115,7 +115,7 @@ export default function AddSandbox() {
                     block
                     size="lg"
                     type="submit"
-                    isChanging={isChanging}
+                    ischanging={isChanging.toString()}
                     disabled={!validateForm()}
                 >
                     Add Sandbox To Registry

@@ -80,7 +80,7 @@ export default function ChangePassword() {
                     block
                     size="lg"
                     type="submit"
-                    isChanging={isChanging}
+                    ischanging={isChanging.toString()}
                     disabled={!validateForm()}
                 >
                     Change Password
