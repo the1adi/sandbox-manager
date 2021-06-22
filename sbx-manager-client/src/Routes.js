@@ -6,6 +6,7 @@ import Login from './containers/Login'
 import ChangePassword from './containers/ChangePassword'
 import Settings from './containers/Settings'
 import AddSandbox from './containers/AddSandbox'
+import SandboxRegistry from './containers/SandboxRegistry'
 
 export default function Routes() {
     return (
@@ -13,8 +14,11 @@ export default function Routes() {
             <Route exact path="/">
                 <Home />
             </Route>
-            <Route exact path="/addsandbox">
+            <Route exact path="/registry/addsandbox">
                 <AddSandbox />
+            </Route>
+            <Route exact path="/registry">
+                <SandboxRegistry />
             </Route>
             <Route exact path="/settings">
                 <Settings />

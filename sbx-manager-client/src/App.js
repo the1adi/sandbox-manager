@@ -72,9 +72,6 @@ function App() {
                                     <LinkContainer to="/registry">
                                         <Nav.Link>Sandbox Registry</Nav.Link>
                                     </LinkContainer>
-                                    <LinkContainer to="/addsandbox">
-                                        <Nav.Link>Add Sandbox</Nav.Link>
-                                    </LinkContainer>
                                     <LinkContainer to="/settings">
                                         <Nav.Link>Settings</Nav.Link>
                                     </LinkContainer>
