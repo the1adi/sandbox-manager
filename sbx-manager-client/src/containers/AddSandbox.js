@@ -3,7 +3,7 @@ import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
 import { useHistory } from 'react-router-dom'
 import LoaderButton from '../components/LoaderButton'
-import { useFormFields } from '../libs/hooksLib'
+import { useFormFields, refreshPage } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
 import './AddSandbox.css'
 import Col from 'react-bootstrap/esm/Col'
@@ -48,9 +48,11 @@ export default function AddSandbox() {
 
         try {
             await API.post('sandbox', '/sandbox-registry', params)
+            refreshPage()
+            alert('Sandbox Added!')
             history.push('/')
         } catch (e) {
-            onError(e)
+            onError(e.response.data)
             setIsChanging(false)
         }
     }

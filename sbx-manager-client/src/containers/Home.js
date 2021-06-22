@@ -3,7 +3,7 @@ import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
 import { useHistory } from 'react-router-dom'
 import LoaderButton from '../components/LoaderButton'
-import { useFormFields } from '../libs/hooksLib'
+import { useFormFields, refreshPage } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
 import DatePicker from 'react-datepicker'
 import './Home.css'
@@ -13,15 +13,16 @@ import { zones, companies } from '../libs/mappingsLib'
 
 export default function Home() {
     // Setting Defauls
-    const history = useHistory()
-    const [isChanging, setIsChanging] = useState(false)
-    const [sandboxes, setSandboxes] = useState({
+    const _sbxListTemp = {
         0: {
             name: '',
             num: '',
             realm: '',
         },
-    })
+    }
+    const history = useHistory()
+    const [isChanging, setIsChanging] = useState(false)
+    const [sandboxes, setSandboxes] = useState(_sbxListTemp)
     const [fields, handleFieldChange] = useFormFields({
         email: '',
         projectName: '',
@@ -43,14 +44,21 @@ export default function Home() {
         return list
     }
 
+    // Initialize and get sandboxes per zone
     useEffect(() => {
         API.get('sandbox', '/sandbox-registry/zone/' + fields.zone)
             .then((sbxRes) => {
                 console.log(sbxRes)
                 const list = parseSandboxesRes(sbxRes.Items)
-                console.log('Setting Sandboxes List to:', list)
-                setSandboxes(list)
-                setSandbox(list[Object.keys(list)[0]])
+                if (JSON.stringify(list) !== '{}') {
+                    console.log('Setting Sandboxes List to:', list)
+                    setSandboxes(list)
+                    setSandbox(list[Object.keys(list)[0]])
+                } else {
+                    console.log('Setting Sandboxes List to:', _sbxListTemp)
+                    setSandboxes(_sbxListTemp)
+                    setSandbox(_sbxListTemp[Object.keys(_sbxListTemp)[0]])
+                }
             })
             .catch((error) => {
                 console.log(error.response)
@@ -77,23 +85,29 @@ export default function Home() {
         event.preventDefault()
 
         setIsChanging(true)
-        console.log({
-            details: {
-                projectName: fields.projectName,
-                company: fields.companyName,
-                expirationDate: endDate,
+
+        const params = {
+            body: {
+                details: {
+                    projectName: fields.projectName,
+                    company: fields.companyName,
+                    expirationDate: endDate,
+                },
+                email: fields.email,
+                Zone: fields.zone,
+                num: sandbox.num,
+                realm: sandbox.realm,
+                isAdmin: isAdmin,
             },
-            email: fields.email,
-            Zone: fields.zone,
-            num: sandbox.num,
-            realm: sandbox.realm,
-            isAdmin: isAdmin,
-        })
+        }
 
         try {
+            await API.post('sandbox', '/sandbox-request', params)
+            refreshPage()
+            alert('Request Submitted!')
             history.push('/')
         } catch (e) {
-            onError(e)
+            onError(e.response.data)
             setIsChanging(false)
         }
     }

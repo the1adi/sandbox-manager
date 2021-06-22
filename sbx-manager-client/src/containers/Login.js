@@ -38,6 +38,7 @@ export default function Login() {
             userHasAuthenticated(true)
             history.push('/')
         } catch (e) {
+            console.log(e.response.data)
             onError(e)
             setIsLoading(false)
         }

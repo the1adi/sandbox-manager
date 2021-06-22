@@ -42,6 +42,7 @@ export default function ChangePassword() {
             userHasAuthenticated(true)
             history.push('/settings')
         } catch (e) {
+            console.log(e.response.data)
             onError(e)
             setIsChanging(false)
         }
