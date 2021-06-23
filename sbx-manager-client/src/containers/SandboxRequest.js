@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import LoaderButton from '../components/LoaderButton'
 import { useFormFields, refreshPage } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
@@ -20,7 +20,7 @@ export default function SandboxRequest() {
             realm: '',
         },
     }
-    const history = useHistory()
+    // const history = useHistory()
     const [isChanging, setIsChanging] = useState(false)
     const [sandboxes, setSandboxes] = useState(_sbxListTemp)
     const [fields, handleFieldChange] = useFormFields({
@@ -48,14 +48,14 @@ export default function SandboxRequest() {
     useEffect(() => {
         API.get('sandbox', '/sandbox-registry/zone/' + fields.zone)
             .then((sbxRes) => {
-                console.log(sbxRes)
+                // console.log(sbxRes)
                 const list = parseSandboxesRes(sbxRes.Items)
                 if (JSON.stringify(list) !== '{}') {
-                    console.log('Setting Sandboxes List to:', list)
+                    // console.log('Setting Sandboxes List to:', list)
                     setSandboxes(list)
                     setSandbox(list[Object.keys(list)[0]])
                 } else {
-                    console.log('Setting Sandboxes List to:', _sbxListTemp)
+                    // console.log('Setting Sandboxes List to:', _sbxListTemp)
                     setSandboxes(_sbxListTemp)
                     setSandbox(_sbxListTemp[Object.keys(_sbxListTemp)[0]])
                 }
@@ -105,7 +105,6 @@ export default function SandboxRequest() {
             await API.post('sandbox', '/sandbox-request', params)
             refreshPage()
             alert('Request Submitted!')
-            history.push('/')
         } catch (e) {
             onError(e.response.data)
             setIsChanging(false)
@@ -150,9 +149,7 @@ export default function SandboxRequest() {
                         />
                     </Form.Group>
                     <Form.Group as={Col} size="lg" controlId="endDate">
-                        <Form.Label>Needed Until</Form.Label>
-                        {' '}
-                        <br></br>
+                        <Form.Label>Needed Until</Form.Label> <br></br>
                         <DatePicker
                             selected={endDate}
                             onChange={(date) => setEndDate(date)}

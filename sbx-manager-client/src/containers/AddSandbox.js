@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
 import LoaderButton from '../components/LoaderButton'
 import { useFormFields, refreshPage } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
@@ -12,7 +12,7 @@ import { zones, realms } from '../libs/mappingsLib'
 
 export default function AddSandbox() {
     // Setting Defauls
-    const history = useHistory()
+    // const history = useHistory()
     const [isChanging, setIsChanging] = useState(false)
     const [fields, handleFieldChange] = useFormFields({
         realm: realms[0],
@@ -50,7 +50,6 @@ export default function AddSandbox() {
             await API.post('sandbox', '/sandbox-registry', params)
             refreshPage()
             alert('Sandbox Added!')
-            history.push('/')
         } catch (e) {
             onError(e.response.data)
             setIsChanging(false)

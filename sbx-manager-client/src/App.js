@@ -67,10 +67,10 @@ function App() {
                             {isAuthenticated ? (
                                 <>
                                     <LinkContainer to="/pending-requests">
-                                        <Nav.Link>Pending Requests</Nav.Link>
+                                        <Nav.Link>Requests</Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to="/registry">
-                                        <Nav.Link>Sandbox Registry</Nav.Link>
+                                        <Nav.Link>Registry</Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to="/settings">
                                         <Nav.Link>Settings</Nav.Link>

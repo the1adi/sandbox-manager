@@ -41,6 +41,7 @@ module.exports.handler = async (event) => {
             isAdmin: data.isAdmin,
             num: data.num,
             realm: data.realm,
+            zone: data.zone,
             details: data.details,
             actioned: false,
             status: '',
@@ -68,6 +69,7 @@ const validate = async (data) => {
         !data.details ||
         !data.num ||
         !data.realm ||
+        !data.zone ||
         !data.details
     ) {
         return 1 // Returns 1 if required fields are missing
