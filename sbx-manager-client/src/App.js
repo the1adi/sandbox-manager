@@ -24,6 +24,7 @@ function App() {
             userHasAuthenticated(true)
         } catch (e) {
             if (e !== 'No current user') {
+                console.log(e.response.data)
                 onError(e)
             }
         }
@@ -66,13 +67,10 @@ function App() {
                             {isAuthenticated ? (
                                 <>
                                     <LinkContainer to="/pending-requests">
-                                        <Nav.Link>Pending Requests</Nav.Link>
+                                        <Nav.Link>Requests</Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to="/registry">
-                                        <Nav.Link>Sandbox Registry</Nav.Link>
-                                    </LinkContainer>
-                                    <LinkContainer to="/addsandbox">
-                                        <Nav.Link>Add Sandbox</Nav.Link>
+                                        <Nav.Link>Registry</Nav.Link>
                                     </LinkContainer>
                                     <LinkContainer to="/settings">
                                         <Nav.Link>Settings</Nav.Link>

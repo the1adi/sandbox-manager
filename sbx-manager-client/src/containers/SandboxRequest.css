@@ -1,0 +1,23 @@
+.SandboxRequest .lander {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.SandboxRequest .lander h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+}
+.SandboxRequest form {
+    margin: 0 auto;
+    max-width: 70%;
+}
+.SandboxRequest .react-datepicker-wrapper {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.SandboxRequest .react-datepicker-wrapper input {
+    display: block;
+    width: 100%;
+    padding: 4px 18px;
+}

@@ -1,0 +1,13 @@
+@media all and (min-width: 480px) {
+    .SandboxRegistry {
+        padding: 20px 0;
+        margin: 0 auto;
+        max-width: 100%;
+    }
+
+    .SandboxRegistry > .LoaderButton:first-child {
+        float: right;
+        margin-bottom: 15px;
+        max-width: 150px;
+    }
+}

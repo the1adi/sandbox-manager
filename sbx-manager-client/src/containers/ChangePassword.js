@@ -42,6 +42,7 @@ export default function ChangePassword() {
             userHasAuthenticated(true)
             history.push('/settings')
         } catch (e) {
+            console.log(e.response.data)
             onError(e)
             setIsChanging(false)
         }
@@ -80,7 +81,7 @@ export default function ChangePassword() {
                     block
                     size="lg"
                     type="submit"
-                    isChanging={isChanging}
+                    ischanging={isChanging.toString()}
                     disabled={!validateForm()}
                 >
                     Change Password

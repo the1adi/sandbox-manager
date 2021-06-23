@@ -6,6 +6,9 @@ import Login from './containers/Login'
 import ChangePassword from './containers/ChangePassword'
 import Settings from './containers/Settings'
 import AddSandbox from './containers/AddSandbox'
+import SandboxRegistry from './containers/SandboxRegistry'
+import AuthenticatedRoute from './components/AuthenticatedRoute'
+import UnauthenticatedRoute from './components/UnauthenticatedRoute'
 
 export default function Routes() {
     return (
@@ -13,21 +16,21 @@ export default function Routes() {
             <Route exact path="/">
                 <Home />
             </Route>
-            <Route exact path="/addsandbox">
+            <AuthenticatedRoute exact path="/registry/addsandbox">
                 <AddSandbox />
-            </Route>
-            <Route exact path="/settings">
+            </AuthenticatedRoute>
+            <AuthenticatedRoute exact path="/registry">
+                <SandboxRegistry />
+            </AuthenticatedRoute>
+            <AuthenticatedRoute exact path="/settings">
                 <Settings />
-            </Route>
-            <Route exact path="/settings/password">
+            </AuthenticatedRoute>
+            <AuthenticatedRoute exact path="/settings/password">
                 <ChangePassword />
-            </Route>
-            <Route exact path="/login">
+            </AuthenticatedRoute>
+            <UnauthenticatedRoute exact path="/login">
                 <Login />
-            </Route>
-            <Route exact path="/resetpassword">
-                <ChangePassword />
-            </Route>
+            </UnauthenticatedRoute>
             {/* Finally, catch all unmatched routes */}
             <Route>
                 <NotFound />

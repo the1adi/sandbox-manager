@@ -13,3 +13,7 @@ export function useFormFields(initialState) {
         },
     ]
 }
+
+export function refreshPage() {
+    window.parent.location = window.parent.location.href
+}

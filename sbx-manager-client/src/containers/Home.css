@@ -11,13 +11,3 @@
     margin: 0 auto;
     max-width: 70%;
 }
-.Home .react-datepicker-wrapper {
-    margin: 0 auto;
-    width: 100%;
-}
-
-.Home .react-datepicker-wrapper input {
-    display: block;
-    width: 100%;
-    padding: 4px 18px;
-}

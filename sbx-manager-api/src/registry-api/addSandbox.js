@@ -18,7 +18,8 @@ module.exports.handler = async (event) => {
         return response.create(400, { message: 'Bad Request' })
     } else if (valid === 3) {
         return response.create(400, {
-            message: 'Sandbox already exists. Re-creating the Sandbox will overwite the data for the Item',
+            message:
+                'Sandbox already exists. Re-creating the Sandbox will overwite the data for the Item',
         })
     } else if (valid === 4) {
         return response.create(500, {
@@ -44,7 +45,7 @@ module.exports.handler = async (event) => {
 
     try {
         const res = await dynamodb.put(params).promise()
-        console.log('response: ', res)
+        console.log('DB response: ', res)
         return response.create(res.statusCode, res)
     } catch (error) {
         console.log('error: ', error)
@@ -65,8 +66,12 @@ const validate = async (data) => {
                 realm: data.realm,
             },
         })
-        console.log( "GET SANDBOX Status Code:", sandbox.statusCode)
-        if (sandbox.statusCode == 200) {
+        console.log('GET SANDBOX Status Code:', sandbox.statusCode)
+        if (
+            sandbox.statusCode == 200
+            // Incase we want to re-allocate the SB to a different zone.. still results in overwrite of all attributes.
+            // && JSON.parse(sandbox.body).Item.zone == data.zone
+        ) {
             return 3 // Returns 3 if sandbox DOES exists
         }
     } catch (error) {
