@@ -10,7 +10,6 @@ import { useAppContext } from '../libs/contextLib'
 import './SandboxRegistry.css'
 
 export default function SandboxRegistry() {
-    const [key, setKey] = useState(zones[0])
     const { isAuthenticated } = useAppContext()
     return (
         <div className="SandboxRegistry">
@@ -24,19 +23,7 @@ export default function SandboxRegistry() {
             ) : (
                 <></>
             )}
-            <>
-                <Tabs
-                    id="controlled-tab"
-                    activeKey={key}
-                    onSelect={(k) => setKey(k)}
-                >
-                    {zones.map((zone) => (
-                        <Tab key={zone} eventKey={zone} title={zone}>
-                            <RegistryTable zone={zone}></RegistryTable>
-                        </Tab>
-                    ))}
-                </Tabs>
-            </>
+            <RegistryTable></RegistryTable>
             <hr />
         </div>
     )
