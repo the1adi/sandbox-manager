@@ -1,13 +1,2 @@
-.Home .lander {
-    padding: 40px 0;
-    text-align: center;
-}
-
-.Home .lander h1 {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-}
-.Home form {
-    margin: 0 auto;
-    max-width: 70%;
+.Home {
 }

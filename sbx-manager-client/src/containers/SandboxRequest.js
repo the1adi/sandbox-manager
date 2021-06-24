@@ -10,6 +10,7 @@ import './Home.css'
 import Col from 'react-bootstrap/esm/Col'
 import 'react-datepicker/dist/react-datepicker.css'
 import { zones, companies } from '../libs/mappingsLib'
+import './SandboxRequest.css'
 
 export default function SandboxRequest() {
     // Setting Defauls
@@ -113,6 +114,12 @@ export default function SandboxRequest() {
 
     return (
         <div className="SandboxRequest">
+            <div className="lander">
+                <h1>Sandbox Request</h1>
+                <p className="text-muted">
+                    Please submit a sandbox request using the form below
+                </p>
+            </div>
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
                     <Form.Group as={Col} size="lg" controlId="email">

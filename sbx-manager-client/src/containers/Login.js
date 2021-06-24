@@ -35,7 +35,7 @@ export default function Login() {
             }
             userHasAuthenticated(true)
         } catch (e) {
-            console.log(e.response.data)
+            console.log(e)
             onError(e)
             setIsLoading(false)
         }

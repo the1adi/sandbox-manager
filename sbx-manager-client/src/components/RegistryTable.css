@@ -1,7 +1,5 @@
-@media all and (min-width: 480px) {
-    .ZoneSandboxes {
-        padding: 20px 0;
-        margin: 0 auto;
-        max-width: 100%;
-    }
+.RegistryTable {
+    padding: 20px 0;
+    margin: 0 auto;
+    max-width: 100%;
 }
