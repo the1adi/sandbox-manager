@@ -6,6 +6,7 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import { zones } from '../libs/mappingsLib'
 import { LinkContainer } from 'react-router-bootstrap'
+import { onError } from '../libs/errorLib'
 import './RegistryTable.css'
 
 // TODO
@@ -15,14 +16,14 @@ export default function RegistryTable(props) {
     const [key, setKey] = useState(zones[0])
     // Initialize and get sandboxes per zone
     useEffect(() => {
-        console.log('CALLING FROM RegistryTable COMPONENT')
         API.get('sandbox', '/sandbox-registry/zone/' + key)
             .then((sbxRes) => {
-                console.log(sbxRes.Items)
+                // console.log(sbxRes.Items)
                 setSandboxes(sbxRes.Items)
             })
             .catch((error) => {
                 console.log(error.response)
+                onError(error)
             })
     }, [key])
 
@@ -59,7 +60,7 @@ export default function RegistryTable(props) {
                                         <td>
                                             <LinkContainer
                                                 size="sm"
-                                                to="/sandboxrequest"
+                                                to={`/sandboxrequest/${zone}/${sb.num}/${sb.realm}`}
                                             >
                                                 <Button>Request Access</Button>
                                             </LinkContainer>

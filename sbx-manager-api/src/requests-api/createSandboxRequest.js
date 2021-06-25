@@ -23,7 +23,7 @@ module.exports.handler = async (event) => {
         })
     } else if (valid === 3) {
         return response.create(400, {
-            message: 'Sandbox does not exist'
+            message: 'Sandbox does not exist',
         })
     } else if (valid === 4) {
         return response.create(500, {
@@ -61,7 +61,7 @@ module.exports.handler = async (event) => {
 
 // Validates if requests contains required attributes
 const validate = async (data) => {
-    console.log("DATA to validate: ", data)
+    console.log('DATA to validate: ', data)
     if (
         !data.email ||
         data.isAdmin === null || // isAdmin is a boolean so it must be checked like this
@@ -69,12 +69,11 @@ const validate = async (data) => {
         !data.details ||
         !data.num ||
         !data.realm ||
-        !data.zone ||
-        !data.details
+        !data.zone
     ) {
         return 1 // Returns 1 if required fields are missing
     }
-    
+
     // Check if Sandbox in request exists in the sandbox database
     try {
         const sandbox = await getSandbox.handler({

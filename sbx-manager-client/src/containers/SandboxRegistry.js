@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
-// import Nav from 'react-bootstrap/Nav'
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
+import React from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import LoaderButton from '../components/LoaderButton'
-import { zones } from '../libs/mappingsLib'
 import RegistryTable from '../components/RegistryTable'
 import { useAppContext } from '../libs/contextLib'
 import './SandboxRegistry.css'
@@ -23,6 +19,9 @@ export default function SandboxRegistry() {
             ) : (
                 <></>
             )}
+            <LinkContainer to="/newsandboxrequest">
+                <LoaderButton size="sm">Request New Sandbox</LoaderButton>
+            </LinkContainer>
             <RegistryTable></RegistryTable>
             <hr />
         </div>
