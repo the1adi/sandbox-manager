@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { API } from 'aws-amplify'
 import Form from 'react-bootstrap/Form'
-// import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import LoaderButton from '../components/LoaderButton'
 import { useFormFields, refreshPage } from '../libs/hooksLib'
 import { onError } from '../libs/errorLib'
@@ -10,8 +10,10 @@ import './Home.css'
 import Col from 'react-bootstrap/esm/Col'
 import 'react-datepicker/dist/react-datepicker.css'
 import { zones, companies } from '../libs/mappingsLib'
+import './RequestNewSandbox.css'
 
-export default function SandboxRequest() {
+export default function RequestNewSandbox() {
+    const history = useHistory()
     // Setting Defauls
     const _sbxListTemp = {
         0: {
@@ -103,8 +105,9 @@ export default function SandboxRequest() {
 
         try {
             await API.post('sandbox', '/sandbox-request', params)
-            refreshPage()
+            // refreshPage()
             alert('Request Submitted!')
+            history.push('/')
         } catch (e) {
             onError(e.response.data)
             setIsChanging(false)
@@ -112,7 +115,13 @@ export default function SandboxRequest() {
     }
 
     return (
-        <div className="SandboxRequest">
+        <div className="RequestNewSandbox">
+            <div className="lander">
+                <h1>Sandbox Request</h1>
+                <p className="text-muted">
+                    Please submit a sandbox request using the form below
+                </p>
+            </div>
             <Form onSubmit={handleSubmit}>
                 <Form.Row>
                     <Form.Group as={Col} size="lg" controlId="email">
@@ -176,16 +185,9 @@ export default function SandboxRequest() {
                             as="select"
                             value={sandbox.name}
                             onChange={(e) => {
-                                // console.log(e)
-                                // console.log(
-                                //     'TO SET: ',
-                                //     sandboxes[e.target.value]
-                                // )
                                 setSandbox(sandboxes[e.target.value])
-                                // console.log('sandbox: ', sandbox)
                             }}
                         >
-                            {/* <option></option> */}
                             {Object.keys(sandboxes).map((sandbox) => (
                                 <option key={sandbox}>{sandbox}</option>
                             ))}
@@ -196,7 +198,7 @@ export default function SandboxRequest() {
                     <Form.Check
                         inline
                         id="isAdmin"
-                        label="Assign as Admin"
+                        label="Request Admin Permissions"
                         type="switch"
                         checked={isAdmin}
                         onChange={onSwitchAction}

@@ -26,7 +26,7 @@ export default function Login() {
 
         try {
             const user = await Auth.signIn(fields.email, fields.password)
-            console.log(user)
+            // console.log(user)
             if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
                 await Auth.completeNewPassword(
                     user, // the Cognito User Object
@@ -35,7 +35,7 @@ export default function Login() {
             }
             userHasAuthenticated(true)
         } catch (e) {
-            console.log(e.response.data)
+            console.log(e)
             onError(e)
             setIsLoading(false)
         }

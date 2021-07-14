@@ -1,13 +1,23 @@
-@media all and (min-width: 480px) {
-    .SandboxRegistry {
-        padding: 20px 0;
-        margin: 0 auto;
-        max-width: 100%;
-    }
+.SandboxRegistry {
+    padding: 20px 0;
+    margin: 0 auto;
+    max-width: 100%;
+}
 
-    .SandboxRegistry > .LoaderButton:first-child {
-        float: right;
-        margin-bottom: 15px;
-        max-width: 150px;
-    }
+.SandboxRegistry .lander {
+    /* padding: 40px 0; */
+    text-align: center;
+}
+
+.SandboxRegistry .lander h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+}
+
+.SandboxRegistry > .LoaderButton {
+    /* display: flex; */
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 30%;
+    /* margin-bottom: 15px; */
 }

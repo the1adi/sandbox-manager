@@ -9,6 +9,7 @@ import './AddSandbox.css'
 import Col from 'react-bootstrap/esm/Col'
 import 'react-datepicker/dist/react-datepicker.css'
 import { zones, realms } from '../libs/mappingsLib'
+import './AddSandbox.css'
 
 export default function AddSandbox() {
     // Setting Defauls
@@ -57,7 +58,7 @@ export default function AddSandbox() {
     }
 
     return (
-        <div className="Home">
+        <div className="AddSandbox">
             <div className="lander">
                 <h1>Add Sandbox to Registry</h1>
                 <p className="text-muted">Enter Sandbox Details below</p>

@@ -6,9 +6,10 @@ import Login from './containers/Login'
 import ChangePassword from './containers/ChangePassword'
 import Settings from './containers/Settings'
 import AddSandbox from './containers/AddSandbox'
-import SandboxRegistry from './containers/SandboxRegistry'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
 import UnauthenticatedRoute from './components/UnauthenticatedRoute'
+import RequestNewSandbox from './containers/RequestNewSandbox'
+import RequestSandbox from './containers/RequestSandbox'
 
 export default function Routes() {
     return (
@@ -16,11 +17,14 @@ export default function Routes() {
             <Route exact path="/">
                 <Home />
             </Route>
-            <AuthenticatedRoute exact path="/registry/addsandbox">
+            <Route exact path="/sandboxrequest/:zone/:num/:realm">
+                <RequestSandbox />
+            </Route>
+            <Route exact path="/newsandboxrequest">
+                <RequestNewSandbox />
+            </Route>
+            <AuthenticatedRoute exact path="/addsandbox">
                 <AddSandbox />
-            </AuthenticatedRoute>
-            <AuthenticatedRoute exact path="/registry">
-                <SandboxRegistry />
             </AuthenticatedRoute>
             <AuthenticatedRoute exact path="/settings">
                 <Settings />
